@@ -1,0 +1,26 @@
+.conteiner{
+    display: grid;
+    grid-template-columns: repeat(11, 33px);
+}
+.colomnLetter{
+    cursor: default;
+    margin: auto auto;
+}
+
+.itemPole{
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    transition: .2s;
+}
+.itemPole:hover{
+    background-color: black;
+    cursor: pointer;
+}
+
+.fonCubeShip{
+    background-color: red;
+}
+.fonCube{
+    background-color: white;
+}
