@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import cl from './PoleConclusion.module.css';
 
 const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashComponent}) => {
-    
     let sechek = 1;
-    console.log(shot);
-
     console.log(`Кэш:`, cashComponent);
 
     useEffect(() => {
@@ -40,8 +37,7 @@ const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashCompon
         }))
     }, [shot]);
 
-    
-
+    // Отрисовка всего поля
     const generationPole = (e, i) => {
         if(e.id == 0){
             return generationPoleNumber(sechek++);
@@ -50,12 +46,14 @@ const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashCompon
         }
     }
 
+    // Отрисовка цифр сбоку
     const generationPoleNumber = (id) => {
         return (
             <div key={id + 'number'} className={cl.colomnLetter}>{id}</div>
         )
     }
 
+    // Отрисовка игрового поля
     const generationPoleGame = ({id, shot, shipItem}) => {
         return (
             <div 
@@ -64,8 +62,8 @@ const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashCompon
                 id={id} 
                 className={`
                     ${cl.itemPole} 
-                    ${shipItem ? cl.fonCubeShip : cl.fonCube} 
-                    ${shot < 2 ? shot == 1 ? cl.shotYES : cl.shotNO : ""}
+                    ${shipItem ? cl.fonCubeShip : cl.fonCube /* Отрисовка кораблей */} 
+                    ${shot < 2 ? shot == 1 ? cl.shotYES : cl.shotNO : ""/* Отрасовка попаданий */}
                 `}
             >{id}</div>
         )

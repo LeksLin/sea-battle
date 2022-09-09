@@ -1,56 +1,43 @@
 import React, { useEffect, useState } from "react";
 import cl from './app.module.css';
 import PoleConclusion from "./PoleConclusion/PoleConclusion";
-import {shipGeneration} from './middleware/shipGeneration';
+import {shipGeneration, getRandomInt} from './middleware/shipGeneration';
 
 function App() {
-  let indexWinUser = 0;
-  let indexWinPK = 0;
-
-  let arrUser = [];
-  let arrPK = [];
+  // Все выстрелы
+  const [arrUser, setArrUser] = useState([]);
+  const [arrPK, setArrPK] = useState([]);
   
-
+  // Размещение кораблей
   const [shipsStateUser, setShipsStateUser] = useState([]);
   const [shipsStatePK, setShipsStatePK] = useState([]);
 
+  // Сохранение попадений и промахов
   const [shotUser, setShotUser] = useState([]);
   const [shotPK, setShotPK] = useState([]);
 
+  // Набор данных по игровым полям
   const [cashComponentUser, setCashComponentUser] = useState([]);
   const [cashComponentPK, setCashComponentPK] = useState([]);
+  //Вспомогательный массив
   let supCashComponent = [];
 
-  useEffect(() => {
-    let index = 0;
-    shotUser.forEach(e => {
-      console.log(e)
-      if(e.shot){
-        index++;
-      }
-    })
-    console.log('Убитых кораблей User: ' + index);
-    if(index == 20){
-      alert('ПОбеда')
-      console.log("Победа");
-    }
-  }, [shotUser]);
+  let boolCash = false;
 
-  useEffect(() => {
-    let index = 0;
-    shotPK.forEach(e => {
-      console.log(e)
-      if(e.shot){
-        index++;
-      }
-    })
-    console.log('Убитых кораблей PK: ' + index);
-    if(index == 20){
-      alert('ПОбеда')
-      console.log("Победа");
-    }
-  }, [shotPK]);
+  // Регистрация Побед
+  useEffect(() => winRegistration(shotUser), [shotUser]);
+  useEffect(() => winRegistration(shotPK), [shotPK]);
 
+  const winRegistration = (shot) => {
+    let index = 0;
+    shot.forEach(e => {
+      if(e.shot) index++;
+    })
+    console.log(`Убитых кораблей PK: ${index}`);
+    if(index == 20) alert('Победа');
+  }
+
+  // Генерация кораблей
   const Refresh = () => {
     setShipsStateUser(shipGeneration());
     setShipsStatePK(shipGeneration());
@@ -58,36 +45,38 @@ function App() {
   console.log(`Пользователь:\n[${shipsStateUser}]`);
   console.log(`ПК:\n[${shipsStatePK}]`);
 
+  // Клики по игровому полю
   const clickUser = (el) => {
-    let bool = shotRegistration(shipsStateUser, el, arrUser, setShotUser);
+    shotRegistration(shipsStateUser, +el.target.id, arrUser, setArrUser, setShotUser);
   }
-
   const clickPK = (el) => {
-    let bool = shotRegistration(shipsStatePK, el, arrPK, setShotPK);
+    shotRegistration(shipsStatePK, +el.target.id, arrPK, setArrPK, setShotPK);
+    PKLogic();
   }
 
-  const shotRegistration = (shipsState, el, arr, setShot) => {
+  // Регистрация попаданий
+  const shotRegistration = (shipsState, id, arr, setArr, setShot) => {
     let bool = false;
-    if(arr.indexOf(+el.target.id) == -1){
+    console.log(arr);
+    if(arr.indexOf(id) == -1){
       shipsState.forEach(e => {
-        if(e.indexOf(+el.target.id) != -1) bool = true;
+        if(e.indexOf(id) != -1) bool = true;
       })
-      arr.push(+el.target.id);
-      console.log(`${bool ? 'Ранел' : 'Мимо'} ${el.target.id}`)
-      setShot(oldShot => [...oldShot, {shot: +bool, id: +el.target.id}]);
+      setArr(oldsetArr => [...oldsetArr, id])
+      console.log(`${bool ? 'Ранел' : 'Мимо'} ${id}`)
+      setShot(oldShot => [...oldShot, {shot: +bool, id: id}]);
     }else{
-      console.log('Уже стрелял')
+      return true;
     }
-    return bool;
+    return false;
   }
-
-  let boolCash = false;
 
   useEffect(() => {
     setCashComponentUser(supCashComponent);
     setCashComponentPK(supCashComponent);
   }, [boolCash]);
 
+  // Создание информации игрового поля
   kubPool();
   function kubPool(){
         let indexEl = 0;
@@ -104,6 +93,25 @@ function App() {
         }
         boolCash = true;
     }
+
+
+
+
+
+
+
+
+
+    const PKLogic = () => {
+      let bool = true;
+      while(bool){
+        const PKAtack = getRandomInt(100);
+        bool = shotRegistration(shipsStateUser, PKAtack, arrUser, setArrUser, setShotUser);
+      }
+    }
+
+
+
 
   return (
     <div className="App">

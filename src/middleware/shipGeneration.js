@@ -1,7 +1,7 @@
 let ships = [];
 let shipsForbidden = [];
 
-const getRandomInt = (max) => 1 + Math.floor(Math.random() * (max - 1));
+export const getRandomInt = (max) => 1 + Math.floor(Math.random() * (max - 1));
 
 export const shipGeneration = () => {
     console.log('------------Построение кораблей---------------')
