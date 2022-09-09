@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import cl from './PoleConclusion.module.css';
 
-const PoleConclusion = ({onClick, ships, shot, cashComponent, setCashComponent}) => {
+const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashComponent}) => {
     
     let sechek = 1;
     console.log(shot);
@@ -13,17 +13,19 @@ const PoleConclusion = ({onClick, ships, shot, cashComponent, setCashComponent})
     }, [ships]);
 
     function shipOut () {
-        ships.forEach(el => {
-            el.forEach(element => {
-                setCashComponent(oldCash => oldCash.map(item => {
-                    return (
-                        item.id == element 
-                        ? {...item, shipItem: 1}
-                        : item
-                    )
-                }))
+        if(ships.length){
+            ships.forEach(el => {
+                el.forEach(element => {
+                    setCashComponent(oldCash => oldCash.map(item => {
+                        return (
+                            item.id == element 
+                            ? {...item, shipItem: 1}
+                            : item
+                        )
+                    }))
+                })
             })
-        })
+        }
     }
 
     useEffect(() => {

@@ -21,6 +21,36 @@ function App() {
   const [cashComponentPK, setCashComponentPK] = useState([]);
   let supCashComponent = [];
 
+  useEffect(() => {
+    let index = 0;
+    shotUser.forEach(e => {
+      console.log(e)
+      if(e.shot){
+        index++;
+      }
+    })
+    console.log('Убитых кораблей User: ' + index);
+    if(index == 20){
+      alert('ПОбеда')
+      console.log("Победа");
+    }
+  }, [shotUser]);
+
+  useEffect(() => {
+    let index = 0;
+    shotPK.forEach(e => {
+      console.log(e)
+      if(e.shot){
+        index++;
+      }
+    })
+    console.log('Убитых кораблей PK: ' + index);
+    if(index == 20){
+      alert('ПОбеда')
+      console.log("Победа");
+    }
+  }, [shotPK]);
+
   const Refresh = () => {
     setShipsStateUser(shipGeneration());
     setShipsStatePK(shipGeneration());
@@ -33,14 +63,7 @@ function App() {
   }
 
   const clickPK = (el) => {
-    console.log('Убитых кораблей: ' + indexWinPK);
     let bool = shotRegistration(shipsStatePK, el, arrPK, setShotPK);
-    // let bool = true;
-    console.log(bool);
-    if(bool) {
-      indexWinPK++;
-    }
-    console.log('Убитых кораблей: ' + indexWinPK);
   }
 
   const shotRegistration = (shipsState, el, arr, setShot) => {
@@ -55,10 +78,6 @@ function App() {
     }else{
       console.log('Уже стрелял')
     }
-    // if(indexWin == 20){
-    //   alert('ПОбеда')
-    //   console.log("Победа");
-    // }
     return bool;
   }
 
@@ -90,7 +109,9 @@ function App() {
     <div className="App">
       <button onClick={Refresh} type="button">Клик</button>
       <PoleConclusion 
+        onClick={clickUser}
         ships={shipsStateUser} 
+        shot={shotUser} 
         cashComponent={cashComponentUser}
         setCashComponent={setCashComponentUser}
       />
