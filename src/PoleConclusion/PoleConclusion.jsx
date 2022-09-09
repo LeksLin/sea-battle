@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import cl from './PoleConclusion.module.css';
 
-const PoleConclusion = ({boolState, index, ships}) => {
+const PoleConclusion = ({onClick, boolState, index, ships}) => {
     let arr = [1,2,3,4,5,6,7,8,9,10];
-
-    const click = (e) => {
-        console.log(e.target.id);
-    }
 
     const poleOutput = (e) => {
         let shipBool = false;
@@ -21,18 +17,13 @@ const PoleConclusion = ({boolState, index, ships}) => {
         // console.log(shipBool, id, ships)
         return (
             <div 
-                onClick={click} 
+                onClick={onClick} 
                 key={id} 
                 id={id} 
                 className={`${cl.itemPole} ${shipBool ? cl.fonCubeShip : cl.fonCube}`}
             >{id}</div>
         )
-      }
-
-
-    
-    
-    
+    }
 
     return (
         <div className={cl.conteiner}>
