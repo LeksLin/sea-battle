@@ -1,26 +1,74 @@
 import React, { useEffect, useState } from "react";
 import cl from './PoleConclusion.module.css';
 
-const PoleConclusion = ({onClick, boolState, index, ships}) => {
+const PoleConclusion = ({onClick, ships, shot}) => {
     let arr = [1,2,3,4,5,6,7,8,9,10];
+    let boolCash = false;
+    let sechek = 1;
+    console.log(shot);
 
-    const poleOutput = (e) => {
-        let shipBool = false;
-        let bool = e == 10;
-        index += bool ? 10 : 0;
-        let id = e + (bool ? index - 10 : index);
-        for(let i = 0; i < ships.length; i++){
-            for(let j = 0; j < ships[i].length; j++){
-                if(ships[i][j] == id) shipBool = true;
+    const [cashComponent, setCashComponent] = useState([]);
+    console.log(`Кэш:`, cashComponent);
+    let supCashComponent = [];
+
+    useEffect(() => {
+        setCashComponent(supCashComponent);
+    }, [boolCash]);
+
+    useEffect(() => {
+        console.log('Изменение ships');
+        cashComponent.forEach((e, i) => {
+            
+            ships.forEach(el => {
+                el.forEach(element => {
+                    if(e.id == element){
+                        supCashComponent[i].shipItem = 1;
+                    }
+                })
+            })
+        })
+        setCashComponent(supCashComponent);
+        console.log(supCashComponent);
+    }, [ships]);
+
+    kubPool();
+    function kubPool(){
+        let indexEl = 0;
+        let bool = true;
+        for(let i = 1; i <= 100; i++){
+            if(i%10 == 1 && bool) {
+                i--;
+                indexEl++;
+                bool = false;
             }
+            if(i%10 == 1 || bool) bool = true;
+            supCashComponent.push({id : bool ? i : 0, idEl: indexEl, shot: 2, shipItem: 0});
+            // console.log({id : bool ? i : 0, idEl: indexEl, shot: 2}, i, bool);
         }
-        // console.log(shipBool, id, ships)
+        boolCash = true;
+    }
+
+    const generationPole = (e, i) => {
+        if(e.id == 0){
+            return generationPoleNumber(sechek++);
+        }else{
+            return generationPoleGame(e);
+        }
+    }
+
+    const generationPoleNumber = (id) => {
+        return (
+            <div key={id + 'number'} className={cl.colomnLetter}>{id}</div>
+        )
+    }
+
+    const generationPoleGame = ({id, shipItem}) => {
         return (
             <div 
                 onClick={onClick} 
                 key={id} 
                 id={id} 
-                className={`${cl.itemPole} ${shipBool ? cl.fonCubeShip : cl.fonCube}`}
+                className={`${cl.itemPole} ${shipItem ? cl.fonCubeShip : cl.fonCube}`}
             >{id}</div>
         )
     }
@@ -38,26 +86,7 @@ const PoleConclusion = ({onClick, boolState, index, ships}) => {
             <div className={cl.colomnLetter}>З</div>
             <div className={cl.colomnLetter}>И</div>
             <div className={cl.colomnLetter}>К</div>
-            <div className={cl.colomnLetter}>1</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>2</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>3</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>4</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>5</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>6</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>7</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>8</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>9</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
-            <div className={cl.colomnLetter}>10</div>
-            {boolState ? arr.map(poleOutput) : arr.map(poleOutput)}
+            {cashComponent.map(generationPole)}
         </div>
     )
 }

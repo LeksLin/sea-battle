@@ -4,54 +4,61 @@ import PoleConclusion from "./PoleConclusion/PoleConclusion";
 import {shipGeneration} from './middleware/shipGeneration';
 
 function App() {
+  let indexWinUser = 0;
+  let indexWinPK = 0;
+
+  let arrUser = [];
+  let arrPK = [];
   
-  let index = 0;
-  let arr = [];
 
   const [shipsStateUser, setShipsStateUser] = useState([]);
   const [shipsStatePK, setShipsStatePK] = useState([]);
-  const [boolState, setBoolState] = useState(false);
+
+  const [shotUser, setShotUser] = useState({});
+  const [shotPK, setShotPK] = useState({});
+
   const Refresh = () => {
-    setBoolState(false);
     setShipsStateUser(shipGeneration());
     setShipsStatePK(shipGeneration());
-    setBoolState(true);
   }
   console.log(`Пользователь:\n[${shipsStateUser}]`);
   console.log(`ПК:\n[${shipsStatePK}]`);
 
   const clickUser = (el) => {
-    
+    shotRegistration(shipsStateUser, el, arrUser, indexWinUser, shotUser, setShotUser);
+  }
+
+  const clickPK = (el) => {
+    shotRegistration(shipsStatePK, el, arrPK, indexWinPK, shotPK, setShotPK);
+  }
+
+  const shotRegistration = (shipsState, el, arr, indexWin, shot, setShot) => {
     if(arr.indexOf(+el.target.id) == -1){
       let bool = false;
-      shipsStateUser.forEach(e => {
+      shipsState.forEach(e => {
         e.forEach(element => {
           if(element == +el.target.id){
+            indexWin++;
             bool = true;
           }
         })
       })
       arr.push(+el.target.id);
       console.log(`${bool ? 'Ранел' : 'Мимо'} ${el.target.id}`)
+      setShot({...shot, shot: +bool, id: +el.target.id});
     }else{
       console.log('Уже стрелял')
     }
-  }
-
-  const clickPK = (el) => {
-    console.log(shipsStatePK, el.target.id);
-    shipsStatePK.forEach(e => {
-      if(e == +el.target.id){
-        console.log('Ранел', el.target.id);
-      }
-    })
+    if(indexWin == 20){
+      console.log("Победа");
+    }
   }
 
   return (
     <div className="App">
       <button onClick={Refresh} type="button">Клик</button>
-      <PoleConclusion onClick={clickUser} boolState={boolState} index={index} ships={shipsStateUser} />
-      <PoleConclusion onClick={clickPK} boolState={boolState} index={index} ships={shipsStatePK} />
+      <PoleConclusion ships={shipsStateUser} />
+      <PoleConclusion onClick={clickPK} ships={shipsStatePK} shot={shotPK}/>
     </div>
   );
 }
