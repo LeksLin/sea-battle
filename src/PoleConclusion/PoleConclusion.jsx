@@ -1,52 +1,62 @@
 import React, { useEffect, useState } from "react";
 import cl from './PoleConclusion.module.css';
 
-const PoleConclusion = ({onClick, ships, shot}) => {
-    let arr = [1,2,3,4,5,6,7,8,9,10];
-    let boolCash = false;
+const PoleConclusion = ({onClick, ships, shot, supCashComponent, cashComponent, setCashComponent}) => {
+    
     let sechek = 1;
     console.log(shot);
 
-    const [cashComponent, setCashComponent] = useState([]);
+    
     console.log(`Кэш:`, cashComponent);
-    let supCashComponent = [];
+    
+
+    
 
     useEffect(() => {
-        setCashComponent(supCashComponent);
-    }, [boolCash]);
-
-    useEffect(() => {
-        console.log('Изменение ships');
-        cashComponent.forEach((e, i) => {
-            
-            ships.forEach(el => {
-                el.forEach(element => {
-                    if(e.id == element){
-                        supCashComponent[i].shipItem = 1;
-                    }
-                })
-            })
-        })
-        setCashComponent(supCashComponent);
-        console.log(supCashComponent);
+        shipOut();
     }, [ships]);
 
-    kubPool();
-    function kubPool(){
-        let indexEl = 0;
-        let bool = true;
-        for(let i = 1; i <= 100; i++){
-            if(i%10 == 1 && bool) {
-                i--;
-                indexEl++;
-                bool = false;
-            }
-            if(i%10 == 1 || bool) bool = true;
-            supCashComponent.push({id : bool ? i : 0, idEl: indexEl, shot: 2, shipItem: 0});
-            // console.log({id : bool ? i : 0, idEl: indexEl, shot: 2}, i, bool);
-        }
-        boolCash = true;
+    function shipOut () {
+        ships.forEach(el => {
+            el.forEach(element => {
+                setCashComponent(oldCash => oldCash.map(item => {
+                    console.log(item)
+                    return (
+                        item.id == element 
+                        ? {...item, shipItem: 1}
+                        : item
+                    )
+                }))
+            })
+        })
     }
+
+    useEffect(() => {
+
+        setCashComponent(oldCash => oldCash.map(item => {
+            console.log(item, shot)
+            return (
+                Object.keys(shot).length 
+                ? item.id == shot[shot.length - 1].id 
+                    ? {...item, shot: shot[shot.length - 1].shot }
+                    : item
+                : item
+            )
+        }))
+
+        // supCashComponent.forEach((e, i) => {
+        //     if(Object.keys(shot).length){
+        //         if(e.id == shot.id){
+        //             supCashComponent[i].shot = 1;
+        //         }
+        //     }
+        // })
+        
+        // setCashComponent(supCashComponent);
+        // shipOut();
+    }, [shot]);
+
+    
 
     const generationPole = (e, i) => {
         if(e.id == 0){
@@ -62,13 +72,17 @@ const PoleConclusion = ({onClick, ships, shot}) => {
         )
     }
 
-    const generationPoleGame = ({id, shipItem}) => {
+    const generationPoleGame = ({id, shot, shipItem}) => {
         return (
             <div 
                 onClick={onClick} 
                 key={id} 
                 id={id} 
-                className={`${cl.itemPole} ${shipItem ? cl.fonCubeShip : cl.fonCube}`}
+                className={`
+                    ${cl.itemPole} 
+                    ${shipItem ? cl.fonCubeShip : cl.fonCube} 
+                    ${shot < 2 ? shot == 1 ? cl.shotYES : cl.shotNO : ""}
+                `}
             >{id}</div>
         )
     }
