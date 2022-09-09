@@ -17,7 +17,8 @@ function App() {
   const [shotUser, setShotUser] = useState([]);
   const [shotPK, setShotPK] = useState([]);
 
-  const [cashComponent, setCashComponent] = useState([]);
+  const [cashComponentUser, setCashComponentUser] = useState([]);
+  const [cashComponentPK, setCashComponentPK] = useState([]);
   let supCashComponent = [];
 
   const Refresh = () => {
@@ -28,23 +29,25 @@ function App() {
   console.log(`ПК:\n[${shipsStatePK}]`);
 
   const clickUser = (el) => {
-    shotRegistration(shipsStateUser, el, arrUser, indexWinUser, shotUser, setShotUser);
+    let bool = shotRegistration(shipsStateUser, el, arrUser, setShotUser);
   }
 
   const clickPK = (el) => {
-    shotRegistration(shipsStatePK, el, arrPK, indexWinPK, shotPK, setShotPK);
+    console.log('Убитых кораблей: ' + indexWinPK);
+    let bool = shotRegistration(shipsStatePK, el, arrPK, setShotPK);
+    // let bool = true;
+    console.log(bool);
+    if(bool) {
+      indexWinPK++;
+    }
+    console.log('Убитых кораблей: ' + indexWinPK);
   }
 
-  const shotRegistration = (shipsState, el, arr, indexWin, shot, setShot) => {
+  const shotRegistration = (shipsState, el, arr, setShot) => {
+    let bool = false;
     if(arr.indexOf(+el.target.id) == -1){
-      let bool = false;
       shipsState.forEach(e => {
-        e.forEach(element => {
-          if(element == +el.target.id){
-            indexWin++;
-            bool = true;
-          }
-        })
+        if(e.indexOf(+el.target.id) != -1) bool = true;
       })
       arr.push(+el.target.id);
       console.log(`${bool ? 'Ранел' : 'Мимо'} ${el.target.id}`)
@@ -52,15 +55,18 @@ function App() {
     }else{
       console.log('Уже стрелял')
     }
-    if(indexWin == 20){
-      console.log("Победа");
-    }
+    // if(indexWin == 20){
+    //   alert('ПОбеда')
+    //   console.log("Победа");
+    // }
+    return bool;
   }
 
   let boolCash = false;
 
   useEffect(() => {
-    setCashComponent(supCashComponent);
+    setCashComponentUser(supCashComponent);
+    setCashComponentPK(supCashComponent);
   }, [boolCash]);
 
   kubPool();
@@ -83,14 +89,17 @@ function App() {
   return (
     <div className="App">
       <button onClick={Refresh} type="button">Клик</button>
-      {/* <PoleConclusion ships={shipsStateUser} /> */}
+      <PoleConclusion 
+        ships={shipsStateUser} 
+        cashComponent={cashComponentUser}
+        setCashComponent={setCashComponentUser}
+      />
       <PoleConclusion 
         onClick={clickPK} 
         ships={shipsStatePK} 
         shot={shotPK} 
-        supCashComponent={supCashComponent}
-        cashComponent={cashComponent}
-        setCashComponent={setCashComponent}
+        cashComponent={cashComponentPK}
+        setCashComponent={setCashComponentPK}
       />
     </div>
   );

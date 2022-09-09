@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import cl from './PoleConclusion.module.css';
 
-const PoleConclusion = ({onClick, ships, shot, supCashComponent, cashComponent, setCashComponent}) => {
+const PoleConclusion = ({onClick, ships, shot, cashComponent, setCashComponent}) => {
     
     let sechek = 1;
     console.log(shot);
 
-    
     console.log(`Кэш:`, cashComponent);
-    
-
-    
 
     useEffect(() => {
         shipOut();
@@ -20,7 +16,6 @@ const PoleConclusion = ({onClick, ships, shot, supCashComponent, cashComponent, 
         ships.forEach(el => {
             el.forEach(element => {
                 setCashComponent(oldCash => oldCash.map(item => {
-                    console.log(item)
                     return (
                         item.id == element 
                         ? {...item, shipItem: 1}
@@ -32,9 +27,7 @@ const PoleConclusion = ({onClick, ships, shot, supCashComponent, cashComponent, 
     }
 
     useEffect(() => {
-
         setCashComponent(oldCash => oldCash.map(item => {
-            console.log(item, shot)
             return (
                 Object.keys(shot).length 
                 ? item.id == shot[shot.length - 1].id 
@@ -43,17 +36,6 @@ const PoleConclusion = ({onClick, ships, shot, supCashComponent, cashComponent, 
                 : item
             )
         }))
-
-        // supCashComponent.forEach((e, i) => {
-        //     if(Object.keys(shot).length){
-        //         if(e.id == shot.id){
-        //             supCashComponent[i].shot = 1;
-        //         }
-        //     }
-        // })
-        
-        // setCashComponent(supCashComponent);
-        // shipOut();
     }, [shot]);
 
     
