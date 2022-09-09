@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import cl from './PoleConclusion.module.css';
 
 const PoleConclusion = ({boolState, index, ships}) => {
-    console.log(boolState,index, typeof(ships));
     let arr = [1,2,3,4,5,6,7,8,9,10];
 
     const click = (e) => {
