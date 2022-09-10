@@ -12,9 +12,10 @@
     height: 30px;
     border: 1px solid black;
     transition: .2s;
+    z-index: 1;
 }
 .itemPole:hover{
-    background-color: black;
+    background-color: gray;
     cursor: pointer;
 }
 
@@ -29,7 +30,51 @@
     color: white;
 }
 
+.test1{
+    position: relative;
+}
+.shotYES{
+    pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.shotYES::after{
+    position: absolute;
+    top: 43%;
+    content: "";
+    width: 100%;
+    height: 2px;
+    border-bottom: 2px solid black;
+    transform: rotate(-45deg);
+}
+
+.shotYES::before{
+    position: absolute;
+    content: "";
+    top: 43%;
+
+    width: 100%;
+    height: 2px;
+    border-bottom: 2px solid black;
+    transform: rotate(45deg);
+}
+
 .shotNO{
+    pointer-events: none;
+    position: absolute;
+    top: 51%;
+    left: 50%;
+    transform: translate(-53%,-50%);
+    width: 50%;
+    height: 50%;
+    border: 2px solid blue;
     color: blue;
+    z-index: 2;
+    border-radius: 100%;
+    transition: .2s;
 }
 

@@ -3,7 +3,7 @@ import cl from './PoleConclusion.module.css';
 
 const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashComponent}) => {
     let sechek = 1;
-    console.log(`Кэш:`, cashComponent);
+    // console.log(`Кэш:`, cashComponent);
 
     useEffect(() => {
         shipOut();
@@ -56,16 +56,22 @@ const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashCompon
     // Отрисовка игрового поля
     const generationPoleGame = ({id, shot, shipItem}) => {
         return (
-            <div 
-                onClick={onClick} 
-                key={id} 
-                id={id} 
-                className={`
-                    ${cl.itemPole} 
-                    ${shipItem ? cl.fonCubeShip : cl.fonCube /* Отрисовка кораблей */} 
-                    ${shot < 2 ? shot == 1 ? cl.shotYES : cl.shotNO : ""/* Отрасовка попаданий */}
-                `}
-            >{id}</div>
+            <div key={id}  className={cl.test1}>
+                <div 
+                    onClick={onClick} 
+                    id={id} 
+                    className={`
+                        ${cl.itemPole} 
+                        ${shipItem ? cl.fonCubeShip : cl.fonCube /* Отрисовка кораблей */} 
+                    `}
+                ></div>
+                <div 
+                    className={`
+                        ${shot < 2 ? shot == 1 ? cl.shotYES : cl.shotNO : ""/* Отрасовка попаданий */} 
+                    `}
+                ></div>
+            </div>
+            
         )
     }
 

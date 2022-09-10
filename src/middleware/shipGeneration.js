@@ -4,7 +4,7 @@ let shipsForbidden = [];
 export const getRandomInt = (max) => 1 + Math.floor(Math.random() * (max - 1));
 
 export const shipGeneration = () => {
-    console.log('------------Построение кораблей---------------')
+    // console.log('------------Построение кораблей---------------')
     ships = [];
     shipsForbidden = [];
     for(let i = 0; i < 10; i++){
@@ -20,10 +20,10 @@ export const shipGeneration = () => {
         else if(i > 0 && i < 3) longShps = 3;
         else if(i > 2 && i < 6) longShps = 2;
         else if(i > 5 && i < 10) longShps = 1;
-        console.log(`Стартовое число: ${randomIndex}, Индекс: ${i} Кол-во палуб: ${longShps}\n-------------------------------------------------------`);
+        // console.log(`Стартовое число: ${randomIndex}, Индекс: ${i} Кол-во палуб: ${longShps}\n-------------------------------------------------------`);
         const {bool, index} = findingDirection(randomIndex, longShps);
         if(index <= 0){
-          console.log('revers');
+        //   console.log('revers');
           i--;
           continue;
         }
@@ -31,20 +31,20 @@ export const shipGeneration = () => {
         
 
         // Для логов
-        switch(napravlenie){
-            case 0:
-                console.log("Направление ЛЕВО");
-                break;
-            case 1:
-                console.log("Направление ВЕРХ");
-                break;
-            case 2:
-                console.log("Направление ПРАВО");
-                break;
-            case 3:
-                console.log("Направление НИЗ");
-                break;
-        }
+        // switch(napravlenie){
+        //     case 0:
+        //         console.log("Направление ЛЕВО");
+        //         break;
+        //     case 1:
+        //         console.log("Направление ВЕРХ");
+        //         break;
+        //     case 2:
+        //         console.log("Направление ПРАВО");
+        //         break;
+        //     case 3:
+        //         console.log("Направление НИЗ");
+        //         break;
+        // }
         InputItem(randomIndex, napravlenie, longShps);
     }
     return ships;
@@ -123,7 +123,7 @@ const findingDirection = (randomIndex, stop) => {
 const choiceOfDirection = (randomIndex, stop, bool, index) => {
     // Выбор направления
     let supRandomIndex = getRandomInt(index);
-    console.log(`Массив рабочих напралений: [${bool}], кол-во индексов: ${index}, Выбранное направление: ${supRandomIndex}`)
+    // console.log(`Массив рабочих напралений: [${bool}], кол-во индексов: ${index}, Выбранное направление: ${supRandomIndex}`)
     let j = 0;
     let napravlenie;
     bool.forEach((e, y) => {
@@ -175,9 +175,9 @@ const InputItem = (randomIndex, napravlenie, stop) => {
         }
         addShipsForbidden(shipsForbidden,[oneEt, centerEt, twoEt], bool);
     }
-    console.log(`Готовый массив: [${arr}]`);
-    console.log(`Запрщенные места: [${shipsForbidden}]`);
-    console.log("Длинна " + shipsForbidden.length)
+    // console.log(`Готовый массив: [${arr}]`);
+    // console.log(`Запрщенные места: [${shipsForbidden}]`);
+    // console.log("Длинна " + shipsForbidden.length)
     // setShips(...ships, ships.push(arr));
     ships.push(arr);
     return arr;

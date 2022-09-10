@@ -33,7 +33,7 @@ function App() {
     shot.forEach(e => {
       if(e.shot) index++;
     })
-    console.log(`Убитых кораблей PK: ${index}`);
+    // console.log(`Убитых кораблей PK: ${index}`);
     if(index == 20) alert('Победа');
   }
 
@@ -42,33 +42,36 @@ function App() {
     setShipsStateUser(shipGeneration());
     setShipsStatePK(shipGeneration());
   }
-  console.log(`Пользователь:\n[${shipsStateUser}]`);
-  console.log(`ПК:\n[${shipsStatePK}]`);
+  // console.log(`Пользователь:\n[${shipsStateUser}]`);
+  // console.log(`ПК:\n[${shipsStatePK}]`);
 
   // Клики по игровому полю
   const clickUser = (el) => {
     shotRegistration(shipsStateUser, +el.target.id, arrUser, setArrUser, setShotUser);
   }
   const clickPK = (el) => {
-    shotRegistration(shipsStatePK, +el.target.id, arrPK, setArrPK, setShotPK);
-    PKLogic();
+    let bool = shotRegistration(shipsStatePK, +el.target.id, arrPK, setArrPK, setShotPK);
+    if(bool != 2){
+      PKLogic();
+    }
+    
   }
 
   // Регистрация попаданий
   const shotRegistration = (shipsState, id, arr, setArr, setShot) => {
-    let bool = false;
-    console.log(arr);
+    let bool = 0;
+    // console.log(arr);
     if(arr.indexOf(id) == -1){
       shipsState.forEach(e => {
-        if(e.indexOf(id) != -1) bool = true;
+        if(e.indexOf(id) != -1) bool = 1;
       })
       setArr(oldsetArr => [...oldsetArr, id])
-      console.log(`${bool ? 'Ранел' : 'Мимо'} ${id}`)
+      // console.log(`${bool ? 'Ранел' : 'Мимо'} ${id}`)
       setShot(oldShot => [...oldShot, {shot: +bool, id: id}]);
     }else{
-      return true;
+      return 2;
     }
-    return false;
+    return bool;
   }
 
   useEffect(() => {
@@ -100,16 +103,172 @@ function App() {
 
 
 
+const [shotRobotYes, setShotRobotYes] = useState(0);
+const [direction, setDirection] = useState({left: 1, top: 0, right: 0, bottom: 0})
 
-
-    const PKLogic = () => {
-      let bool = true;
-      while(bool){
-        const PKAtack = getRandomInt(100);
-        bool = shotRegistration(shipsStateUser, PKAtack, arrUser, setArrUser, setShotUser);
+let left = direction.left, top = direction.top, right = direction.right, bottom = direction.bottom;
+const [arrShot, setArrShot] = useState([]);
+const PKLogic = () => {
+  if(shotRobotYes){
+    let boolShot;
+    if(left){
+      let testShot = arrShot[arrShot.length - 1] - 1;
+      console.log(`Атака Пк Проверка слева: ${testShot}`);
+      let result = plannedAttack(testShot, testShot > 1 && testShot < 100 && testShot % 10);
+      console.log(result);
+      switch(result){
+        case 0:
+          setDirection(oldDirection => ({...oldDirection, left: 0, top: 1}));
+          left = 0;
+          top = 1;
+          return;
+        case 1:
+          setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
+          left = 1; 
+          top = 0; 
+          right = 0; 
+          bottom = 0;
+          return;
+        case 2:
+          setDirection(oldDirection => ({...oldDirection, left: 0, top: 1}));
+          left = 0;
+          top = 1;
+      }
+      
+      console.log(left, top);
+    }
+    if(top){
+      let testShot = arrShot[arrShot.length - 1] - 10;
+      console.log(`Атака Пк Проверка сверху: ${testShot}`);
+      let result = plannedAttack(testShot, testShot > 1 && testShot < 100);
+      console.log(result);
+      switch(result){
+        case 0:
+          setDirection(oldDirection => ({...oldDirection, top: 0, right: 1}));
+          top = 0;
+          right = 1;
+          return;
+        case 1:
+          setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
+          left = 1; 
+          top = 0; 
+          right = 0; 
+          bottom = 0;
+          return;
+        case 2:
+          setDirection(oldDirection => ({...oldDirection, top: 0, right: 1}));
+          top = 0;
+          right = 1;
+      }
+      console.log(top, right);
+    }
+    if(right){
+      let testShot = arrShot[arrShot.length - 1] + 1;
+      console.log(`Атака Пк Проверка справа: ${testShot}`);
+      let result = plannedAttack(testShot, testShot > 1 && testShot < 100 && testShot % 10 != 1);
+      console.log(result);
+      switch(result){
+        case 0:
+          setDirection(oldDirection => ({...oldDirection, right: 0, bottom: 1}));
+          right = 0;
+          bottom = 1;
+          return;
+        case 1:
+          setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
+          left = 1; 
+          top = 0; 
+          right = 0; 
+          bottom = 0;
+          return;
+        case 2:
+          setDirection(oldDirection => ({...oldDirection, right: 0, bottom: 1}));
+          right = 0;
+          bottom = 1;
+      }
+      
+      console.log(right, bottom);
+    }
+    if(bottom){
+      let testShot = arrShot[arrShot.length - 1] + 10;
+        console.log(`Атака Пк Проверка снизу: ${testShot}`);
+        let result = plannedAttack(testShot, testShot > 1 && testShot < 100);
+        console.log(result);
+        switch(result){
+          case 0:
+            setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
+            bottom = 0;
+            right = 0;
+            top = 0;
+            left = 1;
+            setShotRobotYes(0);
+            RandomAtakPK();
+          case 1:
+            setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
+            left = 1; 
+            top = 0; 
+            right = 0; 
+            bottom = 0;
+            return;
+          case 2:
+            setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
+            bottom = 0;
+            right = 0;
+            top = 0;
+            left = 1;
+            setShotRobotYes(0);
+            RandomAtakPK();
+        }
+        console.log(right, bottom);
       }
     }
+    if(!shotRobotYes){
+      RandomAtakPK();
+    }
+}
 
+
+const RandomAtakPK = () => {
+  let bool = 2;
+  while(bool == 2){
+    const PKAtack = getRandomInt(100);
+    bool = shotRegistration(shipsStateUser, PKAtack, arrUser, setArrUser, setShotUser);
+    console.log(`Рандомная атака: ${PKAtack}
+      Результат атаки: ${bool < 2 
+                        ? bool 
+                          ? 'Ранел' 
+                          : 'Мимо' 
+                        : 'Уже стрелял'
+                      }`
+    );
+    if(bool == 1){
+      setShotRobotYes(bool);
+      setArrShot(oldArrShot => [...oldArrShot, PKAtack]);
+    }
+  }
+}
+
+const plannedAttack = (testShot, examination) => {
+  let boolShot;
+  if(examination){
+    boolShot = shotRegistration(shipsStateUser, testShot, arrUser, setArrUser, setShotUser);
+    console.log(`Результат атаки: ${boolShot < 2 
+                                    ? boolShot 
+                                      ? 'Ранел' 
+                                      : 'Мимо' 
+                                    : 'Уже стрелял'
+                                  } ${boolShot}`);
+    if(boolShot == 0 || boolShot == 2){
+      return boolShot;
+    }
+    if(boolShot == 1){
+      setArrShot(oldArrShot => [...oldArrShot, testShot]);
+      return boolShot;
+    }
+  }else{
+    return 0;
+    // setDirection(oldDirection => ({...oldDirection, [first]: 0, [second]: 1}));
+  }
+}
 
 
 
@@ -117,7 +276,7 @@ function App() {
     <div className="App">
       <button onClick={Refresh} type="button">Клик</button>
       <PoleConclusion 
-        onClick={clickUser}
+        // onClick={clickUser}
         ships={shipsStateUser} 
         shot={shotUser} 
         cashComponent={cashComponentUser}
@@ -125,7 +284,7 @@ function App() {
       />
       <PoleConclusion 
         onClick={clickPK} 
-        ships={shipsStatePK} 
+        // ships={shipsStatePK} 
         shot={shotPK} 
         cashComponent={cashComponentPK}
         setCashComponent={setCashComponentPK}
