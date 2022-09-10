@@ -224,6 +224,7 @@ const PKLogic = () => {
     if(!shotRobotYes){
       RandomAtakPK();
     }
+    
 }
 
 
