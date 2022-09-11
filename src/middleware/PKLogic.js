@@ -14,9 +14,11 @@ export const PKLogic = ({
                             shipsStateUser,
                             arrUser,
                             setArrUser,
-                            setShotUser
+                            setShotUser,
+                            setOchered
                         }) => {
     const dopFunc = {shipsStateUser, arrUser, setArrUser, setShotUser, setArrShot, setShotRobotYes};
+    setOchered(1);
     if(shotRobotYes){
         if(left){
             let testShot = arrShot[arrShot.length - 1] - 1;

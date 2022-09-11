@@ -1,0 +1,88 @@
+.header{
+    
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.headerUser{
+    width: 45%;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-size: 30px;
+    padding: 20px 60px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    background-color: var(--BackBlackBlue);
+
+    animation: animUser 1.5s ease-in-out;
+}
+
+.headerBTN{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    background-color: var(--BackBlackBlue);
+}
+
+.headerPK{
+    width: 45%;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-size: 30px;
+    
+    padding: 20px 60px;
+    padding-left: 20px;
+    box-sizing: border-box;
+    background-color: var(--BackBlackBlue);
+
+    animation: animPK 1.5s ease-in-out;
+}
+
+
+.mainPole{
+    display: flex;
+    justify-content: space-between;
+}
+
+.poleUser{
+    display: flex;
+    justify-content: center;
+    
+    box-sizing: border-box;
+    width: 50%;
+    margin: 0 auto;
+
+    animation: animUser 1.5s ease-in-out;
+}
+
+
+
+.polePK{
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 50%;
+    animation: animPK 1.5s ease-in-out;
+}
+
+@keyframes animUser {
+    from {
+        transform: translate(-600px);
+    }
+    to{
+        transform: translate(0px);
+    }
+}
+
+@keyframes animPK {
+    from {
+        transform: translate(600px);
+    }
+    to{
+        transform: translate(0px);
+    }
+}

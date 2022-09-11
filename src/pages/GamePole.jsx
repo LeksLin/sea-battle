@@ -3,8 +3,12 @@ import PoleConclusion from "../PoleConclusion/PoleConclusion";
 import {shipGeneration, getRandomInt} from '../middleware/shipGeneration';
 import {PKLogic} from '../middleware/PKLogic';
 import {shotRegistration} from '../middleware/shotRegistration';
+import cl from './GamePole.module.css';
+import Button from "../UI/Button/Button";
 
-const GamePole = () => {
+const GamePole = ({startGameInputs}) => {
+
+    const [disabled, setDisabled] = useState(true);
     // Все выстрелы
     const [arrUser, setArrUser] = useState([]);
     const [arrPK, setArrPK] = useState([]);
@@ -21,12 +25,16 @@ const GamePole = () => {
     const [cashComponentUser, setCashComponentUser] = useState([]);
     const [cashComponentPK, setCashComponentPK] = useState([]);
 
+    // Осталось кораблей
+    const [killShips, setKillShips] = useState({user: 20, pk: 20})
+
     let supCashComponent = [];
 
     let boolCash = false;
 
+    const [ochered, setOchered] = useState(1);
 
-
+    // Данные для логики пк
     const [shotRobotYes, setShotRobotYes] = useState(0);
     const [direction, setDirection] = useState({left: 1, top: 0, right: 0, bottom: 0})
     
@@ -47,17 +55,33 @@ const GamePole = () => {
         shipsStateUser,
         arrUser,
         setArrUser,
-        setShotUser
+        setShotUser,
+        setOchered
     }
 
 
     // Регистрация Побед
-    useEffect(() => winRegistration(shotUser), [shotUser]);
-    useEffect(() => winRegistration(shotPK), [shotPK]);
+    useEffect(() => winRegistration(
+        shotUser, 
+        setKillShips, 
+        'user', 
+        startGameInputs.pk.length ? startGameInputs.pk : 'PK'
+    ), [shotUser]);
+    useEffect(() => winRegistration(
+        shotPK, 
+        setKillShips, 
+        'pk', 
+        startGameInputs.user
+    ), [shotPK]);
 
+    // Заполнение поля
     useEffect(() => {
-        setCashComponentUser(supCashComponent);
-        setCashComponentPK(supCashComponent);
+        if(boolCash){
+            setCashComponentUser(supCashComponent);
+            setCashComponentPK(supCashComponent);
+            boolCash = false;
+        }
+        
     }, [boolCash]);
 
     kubPool();
@@ -77,13 +101,18 @@ const GamePole = () => {
         boolCash = true;
     }
 
-    const winRegistration = (shot) => {
+    const winRegistration = (shot, setKillShips, userPK, winUserPK) => {
         let index = 0;
         shot.forEach(e => {
             if(e.shot) index++;
         })
         // console.log(`Убитых кораблей PK: ${index}`);
-        if(index == 20) alert('Победа');
+        if(index == 20){
+            setKillShips(oldKillShips => ({...oldKillShips, [userPK]: 'Победа ' + winUserPK}));
+            setDisabled(false);
+        }else{
+            setKillShips(oldKillShips => ({...oldKillShips, [userPK]: 20 - index}))
+        }
     }
 
     useEffect(() => {
@@ -92,39 +121,77 @@ const GamePole = () => {
     }, []);
 
     const Refresh = () => {
+        console.log(arrUser, arrPK);
+        setArrUser([]);
+        setArrPK([]);
+        console.log(shipsStateUser, shipsStatePK);
         setShipsStateUser(shipGeneration());
         setShipsStatePK(shipGeneration());
+        console.log(shotUser, shotPK);
+        setShotUser([]);
+        setShotPK([]);
+        setCashComponentUser(supCashComponent);
+        setCashComponentPK(supCashComponent);
+
+        setShotRobotYes(0);
+        setDirection({left: 1, top: 0, right: 0, bottom: 0});
+        setArrShot([]);
+        setDisabled(true);
     }
 
     const clickUser = (el) => {
         shotRegistration(shipsStateUser, +el.target.id, arrUser, setArrUser, setShotUser);
     }
 
+    
+    
     const clickPK = (el) => {
-        let bool = shotRegistration(shipsStatePK, +el.target.id, arrPK, setArrPK, setShotPK);
-        if(bool != 2){
-            PKLogic(PKLogicObj);
+        console.log(ochered)
+        if(ochered){
+            let bool = shotRegistration(shipsStatePK, +el.target.id, arrPK, setArrPK, setShotPK);
+            setOchered(0);
+            if(bool != 2){
+                setTimeout(PKLogic, 2000, PKLogicObj);
+            }
         }
     }
 
     return (
         <div>
+            <div className={cl.header}>
+                <div className={cl.headerUser}>
+                    <div>{startGameInputs.user}</div>
+                    <div>{killShips.user}</div>
+                </div>
+                <div className={cl.headerBTN}>
+                    <Button disabled={disabled} onClick={Refresh} type="button">Новая игра</Button>
+                </div>
+                <div className={cl.headerPK}>
+                    <div>{killShips.pk}</div>
+                    <div>{startGameInputs.pk.length ? startGameInputs.pk : 'PK'}</div>
+                </div>
+            </div>
+            <div className={cl.mainPole}>
+                <div className={cl.poleUser}>
+                    <PoleConclusion 
+                        // onClick={clickUser}
+                        ships={shipsStateUser} 
+                        shot={shotUser} 
+                        cashComponent={cashComponentUser}
+                        setCashComponent={setCashComponentUser}
+                    />
+                </div>
+                <div className={cl.polePK}>
+                    <PoleConclusion 
+                        onClick={clickPK} 
+                        ships={shipsStatePK} 
+                        shot={shotPK} 
+                        cashComponent={cashComponentPK}
+                        setCashComponent={setCashComponentPK}
+                    />
+                </div>
+            </div>
             
-            <button onClick={Refresh} type="button">Клик</button>
-            <PoleConclusion 
-                // onClick={clickUser}
-                ships={shipsStateUser} 
-                shot={shotUser} 
-                cashComponent={cashComponentUser}
-                setCashComponent={setCashComponentUser}
-            />
-            <PoleConclusion 
-                onClick={clickPK} 
-                ships={shipsStatePK} 
-                shot={shotPK} 
-                cashComponent={cashComponentPK}
-                setCashComponent={setCashComponentPK}
-            />
         </div>
         
     )

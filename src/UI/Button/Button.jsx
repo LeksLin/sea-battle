@@ -1,13 +1,13 @@
 import React from "react";
 import cl from './Button.module.css';
 
-const Button = ({children, ...prop}) => {
+const Button = ({children, disabled, ...prop}) => {
     children = children || 'Напишите текст';
     return (
         <div className={cl.linkDiv}>
-            <div {...prop}  className={`${cl.link}`}>
+            <button disabled={disabled} {...prop}  className={`${cl.link} ${disabled ? '' : cl.line}`}>
                 {children}
-            </div>
+            </button>
         </div>
     )
 }

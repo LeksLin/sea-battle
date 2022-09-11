@@ -15,7 +15,7 @@ function App() {
       {
         !startGameInputs.start 
         ? <InputName startGameInputs={startGameInputs} setStartGameInputs={setStartGameInputs} />
-        : <GamePole/>
+        : <GamePole startGameInputs={startGameInputs}/>
       }
     </div>
   );
