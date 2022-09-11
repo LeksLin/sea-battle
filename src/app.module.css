@@ -1,1 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --black: #000;
+    --blue: #00C6FF;
+    --pink: pink;
+    --green: green;
+    --white: #fff;
+    --red: red;
+
+    --BTN2Color: white;
+    --BTN2ColorH: black;
+    --BTN2ColorB: white;
+
+    --BackBlackBlue: #0a2c3c;
+}
+
 

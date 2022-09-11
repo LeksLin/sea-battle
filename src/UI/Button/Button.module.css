@@ -1,0 +1,73 @@
+.linkDiv{
+    position: relative;
+}
+.link{
+    cursor: pointer;
+    display: block;
+    color: var(--BTN2Color);
+    text-align: center;
+    font-size: 15px;
+    padding: 13px 20px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.link::before{
+    content: '';
+    position: absolute;
+    border-top: 1px solid transparent;
+    border-right: 1px solid transparent;
+    width: 0;
+    height: 0;
+    top: 0;
+    left: 0;
+    transition: 
+        width .15s ease-out .45s, 
+        height .15s ease-out .3s, 
+        border-color 0s ease-out .6s;
+}
+
+.link::after{
+    content: '';
+    position: absolute;
+    border-bottom: 1px solid transparent;
+    border-left: 1px solid transparent;
+    width: 0;
+    height: 0;
+    bottom: -1px;
+    right: 0;
+    transition: 
+        width .15s ease-out .15s, 
+        height .15s ease-out 0s, 
+        border-color 0s ease-out .3s;
+}
+
+.linkB:hover{
+    background-color: var(--BTN2ColorB);
+    color: var(--BTN2ColorH);
+    transition: 
+        color .1s ease-out .6s,
+        background-color .1s ease-out .6s;
+}
+
+.link:hover:before{
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid var(--BTN2ColorB);
+    border-right: 1px solid var(--BTN2ColorB);
+    transition: 
+        border-color 0s ease-out 0s, 
+        width .15s ease-out 0s, 
+        height .15s ease-out .15s;
+}
+
+.link:hover:after{
+    border-left: 1px solid var(--BTN2ColorB);
+    border-bottom: 1px solid var(--BTN2ColorB);
+    width: 100%;
+    height: 100%;
+    transition: 
+        border-color 0s ease-out .3s, 
+        width .15s ease-out .3s,
+        height .15s ease-out .45s;
+}
