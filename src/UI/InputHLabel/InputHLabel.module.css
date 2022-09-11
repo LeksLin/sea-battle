@@ -5,10 +5,10 @@
 }
 
 .input {
-    background-color: #303245;
+    background-color: white;
     border-radius: 12px;
     border: 0;
-    color: #eee;
+    color: var(--BackBlackBlue);
     font-size: 18px;
     height: 100%;
     outline: 0;
@@ -18,7 +18,7 @@
 }
   
 .cut {
-    background-color: #15172b;
+    background-color:  var(--BackBlackBlue);
     border-radius: 10px;
     height: 20px;
     left: 20px;
@@ -26,7 +26,7 @@
     top: -20px;
     transform: translateY(0);
     transition: transform 200ms;
-    width: 105px;
+    width: 115px;
 }
 
 .input:focus ~ .cut,
@@ -35,7 +35,7 @@
 }
 
 .placeholder {
-  color: #65657b;
+  color: var(--BackBlackBlue);
   left: 20px;
   line-height: 14px;
   pointer-events: none;
@@ -47,7 +47,7 @@
 
 .input:focus ~ .placeholder,
 .input:not(:placeholder-shown) ~ .placeholder {
-  transform: translateY(-30px) translateX(10px) scale(0.75);
+  transform: translateY(-30px) translateX(10px) scale(.85);
 }
 
 .input:not(:placeholder-shown) ~ .placeholder {
@@ -55,5 +55,5 @@
 }
 
 .input:focus ~ .placeholder {
-  color: #dc2f55;
+  color: white;
 }

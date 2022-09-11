@@ -1,18 +1,22 @@
 .conteiner{
     display: grid;
-    grid-template-columns: repeat(11, 33px);
+    grid-template-columns: repeat(11, 40px);
 }
+
 .colomnLetter{
     cursor: default;
     margin: auto auto;
+    font-size: 25px;
+    color: white;
 }
 
 .itemPole{
-    width: 30px;
-    height: 30px;
-    border: 1px solid black;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--BackBlackBlue);
     transition: .2s;
     z-index: 1;
+    box-sizing: border-box;
 }
 .itemPole:hover{
     background-color: gray;
@@ -20,7 +24,7 @@
 }
 
 .fonCubeShip{
-    background-color: red;
+    background-color: var(--BackBlackBlue);
 }
 .fonCube{
     background-color: white;
@@ -33,6 +37,11 @@
 .test1{
     position: relative;
 }
+
+.shotShipYES{
+    background-color: var(--BackBlackBlue);
+}
+
 .shotYES{
     pointer-events: none;
     position: absolute;
@@ -48,7 +57,7 @@
     content: "";
     width: 100%;
     height: 2px;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid white;
     transform: rotate(-45deg);
 }
 
@@ -59,7 +68,7 @@
 
     width: 100%;
     height: 2px;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid white;
     transform: rotate(45deg);
 }
 
@@ -71,8 +80,7 @@
     transform: translate(-53%,-50%);
     width: 50%;
     height: 50%;
-    border: 2px solid blue;
-    color: blue;
+    border: 2px solid var(--BackBlackBlue);
     z-index: 2;
     border-radius: 100%;
     transition: .2s;

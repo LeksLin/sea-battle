@@ -1,44 +1,54 @@
-.Game{
-    height: 100%;
-}
-
-
-
-.mainPole{
+.header{
     display: flex;
     justify-content: space-between;
-    height: 91%;
-    background-color: rgba(10, 44, 60, .9);
+    height: 9%;
+    box-sizing: border-box;
+    background-color: var(--BackBlackBlue);
 }
 
-.poleUser{
-    border-right: 3px solid var(--BackBlackBlue);
+.headerUser{
+    cursor: default;
+    width: 45%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    color: white;
+    font-size: 30px;
+    padding: 20px 60px;
+    padding-right: 20px;
     box-sizing: border-box;
-    width: 50%;
-    margin: 0 auto;
+    
 
     animation: animUser 1.5s ease-in-out;
 }
 
-
-
-.polePK{
-    border-left: 3px solid var(--BackBlackBlue);
+.headerBTN{
+    cursor: default;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
-    width: 50%;
-
-    animation: animPK 1.5s ease-in-out;
+    width: 10%;
 }
 
-.opacityPole{
-    opacity: .45;
-    transition: .2s;
+.chekRaund{
+    cursor: default;
+    color: white;
+    font-size: 25px;
+}
+
+.headerPK{
+    width: 45%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 30px;
+    
+    padding: 20px 60px;
+    padding-left: 20px;
+    box-sizing: border-box;
+
+    animation: animPK 1.5s ease-in-out;
 }
 
 @keyframes animUser {

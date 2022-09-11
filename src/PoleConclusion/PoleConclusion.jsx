@@ -63,9 +63,9 @@ const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashCompon
                     className={`
                         ${cl.itemPole} 
                         ${shipItem ? cl.fonCubeShip : cl.fonCube /* Отрисовка кораблей */} 
-
+                        ${shot == 1 ? cl.shotShipYES : "" /* Отрасовка попаданий */} 
                     `}
-                ></div>
+                >{id}</div>
                 <div 
                     className={`
                         ${shot < 2 ? shot == 1 ? cl.shotYES : cl.shotNO : ""/* Отрасовка попаданий */} 
@@ -77,7 +77,7 @@ const PoleConclusion = ({onClick, ships = [], shot, cashComponent, setCashCompon
     }
 
     return (
-        <div className={cl.conteiner}>
+        <div className={`${cl.conteiner}`}>
             <div></div>
             <div className={cl.colomnLetter}>А</div>
             <div className={cl.colomnLetter}>Б</div>

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PoleConclusion from "../PoleConclusion/PoleConclusion";
-import {shipGeneration, getRandomInt} from '../middleware/shipGeneration';
+import {shipGeneration} from '../middleware/shipGeneration';
 import {PKLogic} from '../middleware/PKLogic';
 import {shotRegistration} from '../middleware/shotRegistration';
 import cl from './GamePole.module.css';
 import Button from "../UI/Button/Button";
+import Header from './Header';
 
 const GamePole = ({startGameInputs}) => {
 
     const [disabled, setDisabled] = useState(true);
+    const [chekRaund, setChekRaund] = useState('Ваш ход')
     // Все выстрелы
     const [arrUser, setArrUser] = useState([]);
     const [arrPK, setArrPK] = useState([]);
@@ -16,6 +18,9 @@ const GamePole = ({startGameInputs}) => {
     // Размещение кораблей
     const [shipsStateUser, setShipsStateUser] = useState([]);
     const [shipsStatePK, setShipsStatePK] = useState([]);
+
+    const [shipsAliveUser, setShipsAliveUser] = useState([[1,1,1,1],[1,1,1],[1,1,1],[1,1],[1,1],[1,1],[1],[1],[1],[1]]);
+    const [shipsAlivePK, setShipsAlivePK] = useState([[1,1,1,1],[1,1,1],[1,1,1],[1,1],[1,1],[1,1],[1],[1],[1],[1]]);
 
     // Сохранение попадений и промахов
     const [shotUser, setShotUser] = useState([]);
@@ -81,8 +86,11 @@ const GamePole = ({startGameInputs}) => {
             setCashComponentPK(supCashComponent);
             boolCash = false;
         }
-        
     }, [boolCash]);
+
+    useEffect(() => {
+        setChekRaund(ochered ? 'Ваш ход' : 'Ход противника');
+    }, [ochered])
 
     kubPool();
     function kubPool(){
@@ -143,52 +151,106 @@ const GamePole = ({startGameInputs}) => {
         shotRegistration(shipsStateUser, +el.target.id, arrUser, setArrUser, setShotUser);
     }
 
+    useEffect(() => {
+        console.log(shipsAlivePK)
+            shipsAlivePK.forEach((e, i) => {
+                if(i == 0){
+                    console.log(`4 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                }else if(i <= 2){
+                    console.log(`3 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                }else if(i <= 5){
+                    console.log(`2 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                }else if(i <= 9){
+                    console.log(`1 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                }
+            })
+    }, [shipsAlivePK])
+
+    useEffect(() => {
+        console.log(shipsAliveUser)
+        shipsAliveUser.forEach((e, i) => {
+                if(i == 0){
+                    console.log(`4 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                }else if(i <= 2){
+                    console.log(`3 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                }else if(i <= 5){
+                    console.log(`2 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                }else if(i <= 9){
+                    console.log(`1 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                }
+            })
+    }, [shipsAliveUser])
+
     
     
     const clickPK = (el) => {
         console.log(ochered)
-        if(ochered){
+        if(ochered && disabled){
             let bool = shotRegistration(shipsStatePK, +el.target.id, arrPK, setArrPK, setShotPK);
-            setOchered(0);
+            shipsStatePK.forEach((e, i) => {
+                e.forEach((el, ind) => {
+                    if(el){
+                        shotPK.forEach(elem => {
+                            if(elem.shot){
+                                if(elem.id == el){
+                                    setShipsAlivePK(oldShipsAlivePK => [...oldShipsAlivePK.slice(0, i), [...oldShipsAlivePK[i].slice(0, ind), 0, ...oldShipsAlivePK[i].slice(ind + 1)], ...oldShipsAlivePK.slice(i + 1)]);
+                                }
+                            }
+                        })
+                    }
+                })
+            })
+
+            shipsStateUser.forEach((e, i) => {
+                e.forEach((el, ind) => {
+                    if(el){
+                        shotUser.forEach(elem => {
+                            if(elem.shot){
+                                if(elem.id == el){
+                                    setShipsAliveUser(oldShipsAliveUser => [...oldShipsAliveUser.slice(0, i), [...oldShipsAliveUser[i].slice(0, ind), 0, ...oldShipsAliveUser[i].slice(ind + 1)], ...oldShipsAliveUser.slice(i + 1)]);
+                                }
+                            }
+                        })
+                    }
+                })
+            })
+            
             if(bool != 2){
-                setTimeout(PKLogic, 2000, PKLogicObj);
+                setOchered(0);
+                setTimeout(PKLogic, 200, PKLogicObj);
+
             }
         }
     }
 
+    // console.log(shipsStateUser);
+
+    const headerInf = {startGameInputs, killShips, disabled, chekRaund, Refresh};
     return (
-        <div>
-            <div className={cl.header}>
-                <div className={cl.headerUser}>
-                    <div>{startGameInputs.user}</div>
-                    <div>{killShips.user}</div>
-                </div>
-                <div className={cl.headerBTN}>
-                    <Button disabled={disabled} onClick={Refresh} type="button">Новая игра</Button>
-                </div>
-                <div className={cl.headerPK}>
-                    <div>{killShips.pk}</div>
-                    <div>{startGameInputs.pk.length ? startGameInputs.pk : 'PK'}</div>
-                </div>
-            </div>
+        <div className={cl.Game}>
+            <Header props={headerInf} />
             <div className={cl.mainPole}>
                 <div className={cl.poleUser}>
-                    <PoleConclusion 
-                        // onClick={clickUser}
-                        ships={shipsStateUser} 
-                        shot={shotUser} 
-                        cashComponent={cashComponentUser}
-                        setCashComponent={setCashComponentUser}
-                    />
+                    <div className={ochered ? cl.opacityPole : ''}>
+                        <PoleConclusion 
+                            // onClick={clickUser}
+                            ships={shipsStateUser} 
+                            shot={shotUser} 
+                            cashComponent={cashComponentUser}
+                            setCashComponent={setCashComponentUser}
+                        />
+                    </div>
                 </div>
                 <div className={cl.polePK}>
-                    <PoleConclusion 
-                        onClick={clickPK} 
-                        ships={shipsStatePK} 
-                        shot={shotPK} 
-                        cashComponent={cashComponentPK}
-                        setCashComponent={setCashComponentPK}
-                    />
+                    <div className={!ochered ? cl.opacityPole : ''}>
+                        <PoleConclusion 
+                            onClick={clickPK} 
+                            // ships={shipsStatePK} 
+                            shot={shotPK} 
+                            cashComponent={cashComponentPK}
+                            setCashComponent={setCashComponentPK}
+                        />
+                    </div>
                 </div>
             </div>
             

@@ -72,6 +72,7 @@ export const PKLogic = ({
             switch(result){
                 case 0:
                     setDirection(oldDirection => ({...oldDirection, right: 0, bottom: 1}));
+
                     return;
                 case 1:
                     setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
@@ -89,19 +90,33 @@ export const PKLogic = ({
 
             let result = plannedAttack(testShot, testShot > 1 && testShot < 100, dopFunc);
 
-            console.log(result);
+            console.log(result, arrShot);
             switch(result){
                 case 0:
                     setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
-                    setShotRobotYes(0);
+                    if(arrShot.length == 1) {
+                        console.log('Обнуление массива')
+                        setArrShot([]);
+                        setShotRobotYes(0);
+                    }else{
+                        console.log('Перепроверка')
+                        setArrShot(oldArrShot => [oldArrShot[0]]);
+                    }
                     return;
                 case 1:
                     setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
                     return;
                 case 2:
                     setDirection(oldDirection => ({...oldDirection, left: 1, top: 0, right: 0, bottom: 0}));
-                    setShotRobotYes(0);
-                    RandomAtakPK(dopFunc);
+                    if(arrShot.length == 1) {
+                        console.log('Обнуление массива')
+                        setArrShot([]);
+                        setShotRobotYes(0);
+                        RandomAtakPK(dopFunc);
+                    }else{
+                        console.log('Перепроверка')
+                        setArrShot(oldArrShot => [oldArrShot[0]]);
+                    }
             }
             console.log(right, bottom);
         }

@@ -11,7 +11,7 @@ function App() {
   const [startGameInputs, setStartGameInputs] = useState({user: '', pk: '', start: false});
 
   return (
-    <div className="App">
+    <div className={cl.App}>
       {
         !startGameInputs.start 
         ? <InputName startGameInputs={startGameInputs} setStartGameInputs={setStartGameInputs} />
