@@ -5,7 +5,6 @@ import cl from './InputName.module.css';
 
 const InputName = ({startGameInputs, setStartGameInputs}) => {
     const startGame = () => {
-        console.log(startGameInputs.user.length)
         if(startGameInputs.user.length){
             setStartGameInputs(oldInput => ({...oldInput, start: true}));
         }
@@ -27,7 +26,6 @@ const InputName = ({startGameInputs, setStartGameInputs}) => {
                     </div>
                 </div>
             </div>
-            <div className={cl.mainPole}></div>
         </div>
         
     )

@@ -8,9 +8,11 @@ import Button from "../UI/Button/Button";
 import Header from './Header';
 
 const GamePole = ({startGameInputs}) => {
-
+    const [serchShot, setSearchShot] = useState(true);
+    // Показывает конец игры
     const [disabled, setDisabled] = useState(true);
-    const [chekRaund, setChekRaund] = useState('Ваш ход')
+    // Записывает чей ход
+    const [chekRaund, setChekRaund] = useState('Ваш ход');
     // Все выстрелы
     const [arrUser, setArrUser] = useState([]);
     const [arrPK, setArrPK] = useState([]);
@@ -136,11 +138,10 @@ const GamePole = ({startGameInputs}) => {
         setShipsStatePK(shipsPK);
     }, []);
 
+    // Перезапуск игры
     const Refresh = () => {
-        console.log(arrUser, arrPK);
         setArrUser([]);
         setArrPK([]);
-        console.log(shipsStateUser, shipsStatePK);
 
         const {shipsUser, shipsForbiddenUser} = shipGeneration('shipsUser', 'shipsForbiddenUser');
         setShipsForbiddenUser(shipsForbiddenUser);
@@ -150,7 +151,6 @@ const GamePole = ({startGameInputs}) => {
         setShipsForbiddenPK(shipsForbiddenPK);
         setShipsStatePK(shipsPK);
 
-        console.log(shotUser, shotPK);
         setShotUser([]);
         setShotPK([]);
         setCashComponentUser(supCashComponent);
@@ -166,39 +166,40 @@ const GamePole = ({startGameInputs}) => {
         shotRegistration(shipsStateUser, +el.target.id, arrUser, setArrUser, setShotUser);
     }
 
+    // Отслеживание живых и мертвых кораблей
+    // Поле ПК
+    // useEffect(() => {
+    //     console.log(shipsAlivePK)
+    //         shipsAlivePK.forEach((e, i) => {
+    //             if(i == 0){
+    //                 console.log(`4 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+    //                 // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
+    //             }else if(i <= 2){
+    //                 console.log(`3 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+    //                 // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
+    //             }else if(i <= 5){
+    //                 console.log(`2 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+    //                 // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
+    //             }else if(i <= 9){
+    //                 console.log(`1 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+    //                 // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
+    //             }
+    //         })
+    // }, [shipsAlivePK])
+    // Поле User
     useEffect(() => {
-        console.log(shipsAlivePK)
-            shipsAlivePK.forEach((e, i) => {
-                if(i == 0){
-                    console.log(`4 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
-                    // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
-                }else if(i <= 2){
-                    console.log(`3 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
-                    // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
-                }else if(i <= 5){
-                    console.log(`2 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
-                    // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
-                }else if(i <= 9){
-                    console.log(`1 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
-                    // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
-                }
-            })
-    }, [shipsAlivePK])
-
-    useEffect(() => {
-        console.log(shipsAliveUser)
         shipsAliveUser.forEach((e, i) => {
                 if(i == 0){
-                    console.log(`4 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    // console.log(`4 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
                     if(e.indexOf(1) < 0) setArrUser(oldArrUser => [...oldArrUser, ...shipsForbiddenUser[i]]);
                 }else if(i <= 2){
-                    console.log(`3 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    // console.log(`3 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
                     if(e.indexOf(1) < 0) setArrUser(oldArrUser => [...oldArrUser, ...shipsForbiddenUser[i]]);
                 }else if(i <= 5){
-                    console.log(`2 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    // console.log(`2 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
                     if(e.indexOf(1) < 0) setArrUser(oldArrUser => [...oldArrUser, ...shipsForbiddenUser[i]]);
                 }else if(i <= 9){
-                    console.log(`1 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    // console.log(`1 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
                     if(e.indexOf(1) < 0) setArrUser(oldArrUser => [...oldArrUser, ...shipsForbiddenUser[i]]);
                 }
             })
@@ -207,9 +208,10 @@ const GamePole = ({startGameInputs}) => {
     
     
     const clickPK = (el) => {
-        console.log(ochered)
+        // console.log(ochered)
         if(ochered && disabled){
             let bool = shotRegistration(shipsStatePK, +el.target.id, arrPK, setArrPK, setShotPK);
+            // Сохранение убитых палуб поля ПК
             shipsStatePK.forEach((e, i) => {
                 e.forEach((el, ind) => {
                     if(el){
@@ -223,7 +225,7 @@ const GamePole = ({startGameInputs}) => {
                     }
                 })
             })
-
+            // Сохранение убитых палуб поля User
             shipsStateUser.forEach((e, i) => {
                 e.forEach((el, ind) => {
                     if(el){
@@ -240,13 +242,10 @@ const GamePole = ({startGameInputs}) => {
             
             if(bool != 2){
                 setOchered(0);
-                setTimeout(PKLogic, 200, PKLogicObj);
-
+                setTimeout(PKLogic, 800, PKLogicObj, serchShot, setSearchShot);
             }
         }
     }
-
-    // console.log(shipsStateUser);
 
     const headerInf = {startGameInputs, killShips, disabled, chekRaund, Refresh};
     return (
@@ -268,7 +267,7 @@ const GamePole = ({startGameInputs}) => {
                     <div className={!ochered ? cl.opacityPole : ''}>
                         <PoleConclusion 
                             onClick={clickPK} 
-                            // ships={shipsStatePK} 
+                            ships={disabled ? [] : shipsStatePK} 
                             shot={shotPK} 
                             cashComponent={cashComponentPK}
                             setCashComponent={setCashComponentPK}

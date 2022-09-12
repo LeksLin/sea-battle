@@ -47,8 +47,6 @@ export const shipGeneration = (shipsName, shipsForbiddenName) => {
         // }
         InputItem(randomIndex, napravlenie, longShps, i);
     }
-    console.log(shipsForbidden);
-    console.log(ships)
     return {[shipsName]: ships, [shipsForbiddenName]: shipsForbidden};
 }
 
