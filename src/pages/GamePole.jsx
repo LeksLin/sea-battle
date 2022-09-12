@@ -14,6 +14,10 @@ const GamePole = ({startGameInputs}) => {
     // Все выстрелы
     const [arrUser, setArrUser] = useState([]);
     const [arrPK, setArrPK] = useState([]);
+
+    // Запрещенные клики 
+    const [shipsForbiddenUser, setShipsForbiddenUser] = useState([]);
+    const [shipsForbiddenPK, setShipsForbiddenPK] = useState([]);
     
     // Размещение кораблей
     const [shipsStateUser, setShipsStateUser] = useState([]);
@@ -124,8 +128,12 @@ const GamePole = ({startGameInputs}) => {
     }
 
     useEffect(() => {
-        setShipsStateUser(shipGeneration());
-        setShipsStatePK(shipGeneration());
+        const {shipsUser, shipsForbiddenUser} = shipGeneration('shipsUser', 'shipsForbiddenUser');
+        setShipsForbiddenUser(shipsForbiddenUser);
+        setShipsStateUser(shipsUser);
+        const {shipsPK, shipsForbiddenPK} = shipGeneration('shipsPK', 'shipsForbiddenPK');
+        setShipsForbiddenPK(shipsForbiddenPK);
+        setShipsStatePK(shipsPK);
     }, []);
 
     const Refresh = () => {
@@ -133,8 +141,15 @@ const GamePole = ({startGameInputs}) => {
         setArrUser([]);
         setArrPK([]);
         console.log(shipsStateUser, shipsStatePK);
-        setShipsStateUser(shipGeneration());
-        setShipsStatePK(shipGeneration());
+
+        const {shipsUser, shipsForbiddenUser} = shipGeneration('shipsUser', 'shipsForbiddenUser');
+        setShipsForbiddenUser(shipsForbiddenUser);
+        setShipsStateUser(shipsUser);
+
+        const {shipsPK, shipsForbiddenPK} = shipGeneration('shipsPK', 'shipsForbiddenPK');
+        setShipsForbiddenPK(shipsForbiddenPK);
+        setShipsStatePK(shipsPK);
+
         console.log(shotUser, shotPK);
         setShotUser([]);
         setShotPK([]);
@@ -156,12 +171,16 @@ const GamePole = ({startGameInputs}) => {
             shipsAlivePK.forEach((e, i) => {
                 if(i == 0){
                     console.log(`4 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
                 }else if(i <= 2){
                     console.log(`3 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
                 }else if(i <= 5){
                     console.log(`2 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
                 }else if(i <= 9){
                     console.log(`1 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    // if(e.indexOf(1) < 0) setArrPK(oldArrPK => [...oldArrPK, ...shipsForbiddenPK[i]]);
                 }
             })
     }, [shipsAlivePK])
@@ -171,12 +190,16 @@ const GamePole = ({startGameInputs}) => {
         shipsAliveUser.forEach((e, i) => {
                 if(i == 0){
                     console.log(`4 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    if(e.indexOf(1) < 0) setArrUser(oldArrUser => [...oldArrUser, ...shipsForbiddenUser[i]]);
                 }else if(i <= 2){
                     console.log(`3 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    if(e.indexOf(1) < 0) setArrUser(oldArrUser => [...oldArrUser, ...shipsForbiddenUser[i]]);
                 }else if(i <= 5){
                     console.log(`2 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    if(e.indexOf(1) < 0) setArrUser(oldArrUser => [...oldArrUser, ...shipsForbiddenUser[i]]);
                 }else if(i <= 9){
                     console.log(`1 палубный ${e.indexOf(1) >= 0 ? 'жив' : 'мертв'}`);
+                    if(e.indexOf(1) < 0) setArrUser(oldArrUser => [...oldArrUser, ...shipsForbiddenUser[i]]);
                 }
             })
     }, [shipsAliveUser])
